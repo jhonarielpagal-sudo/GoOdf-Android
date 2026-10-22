@@ -33,6 +33,8 @@ jobs:
           if [ ! -d android ]; then
             flutter create --platforms=android --project-name goodf_mobile --org org.goodf .
           fi
+          # flutter create adds a sample test that refers to a MyApp class we don't have.
+          rm -f test/widget_test.dart
 
       - name: Install dependencies
         run: flutter pub get
