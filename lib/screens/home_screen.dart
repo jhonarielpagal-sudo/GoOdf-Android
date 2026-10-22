@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 import '../odf/odf_io.dart';
 import '../odf/odf_model.dart';
@@ -161,18 +158,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _share() async {
-    if (_doc == null) return;
-    try {
-      final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/$_fileName');
-      await file.writeAsString(_text);
-      await Share.shareXFiles([XFile(file.path)], text: _fileName);
-    } catch (e) {
-      _snack('Hindi maibahagi: $e');
-    }
-  }
-
   void _syncCounts(String type) {
     final doc = _doc!;
     final organ = doc.find('Organ');
@@ -245,11 +230,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 tooltip: 'I-save',
                 icon: const Icon(Icons.save),
                 onPressed: _saveAs,
-              ),
-              IconButton(
-                tooltip: 'Ibahagi',
-                icon: const Icon(Icons.share),
-                onPressed: _share,
               ),
             ],
             PopupMenuButton<String>(
