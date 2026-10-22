@@ -1,8 +1,8 @@
-/// In-memory model of a GrandOrgue organ definition file (.organ).
-///
-/// The format is INI-like: [Section] headers followed by Key=Value lines.
-/// The model keeps the order of sections and keys so that a file can be
-/// edited and written back without being reshuffled.
+// In-memory model of a GrandOrgue organ definition file (.organ).
+//
+// The format is INI-like: [Section] headers followed by Key=Value lines.
+// The model keeps the order of sections and keys so that a file can be
+// edited and written back without being reshuffled.
 
 class OdfEntry {
   String key;
