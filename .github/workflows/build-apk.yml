@@ -35,6 +35,8 @@ jobs:
           fi
           # flutter create adds a sample test that refers to a MyApp class we don't have.
           rm -f test/widget_test.dart
+          # Name shown under the app icon on the phone.
+          sed -i 's/android:label="[^"]*"/android:label="GoOdf Mobile"/' android/app/src/main/AndroidManifest.xml
 
       - name: Install dependencies
         run: flutter pub get
@@ -51,16 +53,19 @@ jobs:
         run: flutter build apk --release
 
       - name: Rename APK
-        run: cp build/app/outputs/flutter-apk/app-release.apk goodf-mobile.apk
+        run: |
+          V=$(grep '^version:' pubspec.yaml | sed -E 's/version: *([0-9]+\.[0-9]+).*/\1/')
+          cp build/app/outputs/flutter-apk/app-release.apk "GoOdf-Mobile-V${V}.apk"
+          echo "APK_NAME=GoOdf-Mobile-V${V}.apk" >> "$GITHUB_ENV"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: goodf-mobile-apk
-          path: goodf-mobile.apk
+          path: ${{ env.APK_NAME }}
 
       - name: Attach APK to GitHub release (tags only)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: goodf-mobile.apk
+          files: ${{ env.APK_NAME }}
