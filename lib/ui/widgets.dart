@@ -279,8 +279,9 @@ class _SingleRefDropdownState extends State<SingleRefDropdown> {
   Widget build(BuildContext context) {
     final targets = sectionsOf(widget.doc, widget.targetType);
     final raw = widget.section.get(widget.keyName);
-    var cur = raw == null ? 0 : (int.tryParse(raw.trim()) ?? 0);
-    if (cur != 0 && !targets.any((t) => t.topNumber == cur)) cur = 0;
+    // -1 means "not set"; 0 is a real value (Manual000 is the pedal).
+    var cur = raw == null ? -1 : (int.tryParse(raw.trim()) ?? -1);
+    if (!targets.any((t) => t.topNumber == cur)) cur = -1;
     return InputDecorator(
       decoration: InputDecoration(
         labelText: widget.label,
@@ -293,7 +294,7 @@ class _SingleRefDropdownState extends State<SingleRefDropdown> {
           value: cur,
           isExpanded: true,
           items: [
-            const DropdownMenuItem<int>(value: 0, child: Text('(not set)')),
+            const DropdownMenuItem<int>(value: -1, child: Text('(not set)')),
             for (final t in targets)
               DropdownMenuItem<int>(
                 value: t.topNumber!,
@@ -304,7 +305,7 @@ class _SingleRefDropdownState extends State<SingleRefDropdown> {
           onChanged: (v) {
             if (v == null) return;
             setState(() {
-              if (v == 0) {
+              if (v == -1) {
                 widget.section.remove(widget.keyName);
               } else {
                 widget.section.set(widget.keyName, pad3(v));

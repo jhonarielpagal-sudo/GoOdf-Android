@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../app_info.dart';
 import '../odf/odf_io.dart';
 import '../odf/odf_ops.dart';
 import '../ui/editor_pane.dart';
@@ -134,6 +135,15 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _about() {
+    showAboutDialog(
+      context: context,
+      applicationName: kAppName,
+      applicationVersion: 'V$kAppVersion',
+      applicationLegalese: '$kAppCredit\nBased on GoOdf (GPL-3.0)',
+    );
+  }
+
   void _menu(String v) {
     switch (v) {
       case 'new':
@@ -150,6 +160,9 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 'check':
         _check();
+        break;
+      case 'about':
+        _about();
         break;
     }
   }
@@ -201,6 +214,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             value: 'import', child: Text('Import Stops/Ranks')),
                         PopupMenuItem(value: 'check', child: Text('Check file')),
                       ],
+                      const PopupMenuDivider(),
+                      const PopupMenuItem(value: 'about', child: Text('About')),
                     ],
                   ),
                 ],
@@ -246,8 +261,9 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const Icon(Icons.piano, size: 72),
             const SizedBox(height: 16),
-            Text('GoOdf Mobile',
-                style: Theme.of(context).textTheme.headlineSmall),
+            Text(kAppName, style: Theme.of(context).textTheme.headlineSmall),
+            Text('V$kAppVersion   $kAppCredit',
+                style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 8),
             const Text(
               'Create and edit GrandOrgue organ definition files (.organ).\n'

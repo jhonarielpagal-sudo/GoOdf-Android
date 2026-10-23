@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_info.dart';
 import 'screens/home_screen.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class GoodfMobileApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GoOdf Mobile',
+      title: kAppName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF6D4C41),
